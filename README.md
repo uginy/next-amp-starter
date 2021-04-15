@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Stack
+
+* next.js 10.1.3
+* mobx 6.2.0
+* mobx-react 7.1.2
+* react-i18next 11.8.13
+* material-ui/core 4.11.3
+* typescript 4.2.4
+
 ## Getting Started
 
 First, run the development server:
