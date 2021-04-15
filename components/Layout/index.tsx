@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import React from "react";
+import { TopNav } from "./nav";
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
@@ -25,14 +26,15 @@ export const LayoutContainer = ({ children }) => {
   const router = useRouter();
   const classes = useStyles();
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     uiStore.setLang(event.target.value);
-    router.push("./", "./", { locale: event.target.value });
+    await router.push("./", "./", { locale: event.target.value });
   };
 
   return (
     <div className={styles.container}>
-      <header>
+      <header className={styles.header}>
+        <TopNav />
         <FormControl className={classes.formControl}>
           <InputLabel id="demo-simple-select-label">Language</InputLabel>
           <Select
