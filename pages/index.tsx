@@ -4,8 +4,6 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import styles from "../styles/Home.module.css";
 import { useTranslation } from "next-i18next";
 
-export const config = { amp: "hybrid" };
-
 const Home = () => {
   const { t } = useTranslation();
   return (
