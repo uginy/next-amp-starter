@@ -25,6 +25,8 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 import { useRouter } from "next/router";
 import Link from "next/link";
+import useStore from "../../hooks/useStore";
+import { observer } from "mobx-react-lite";
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme: Theme) =>
@@ -91,11 +93,12 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export const LayoutContainer = ({ children, components }) => {
+export const LayoutContainer = observer(({ children }) => {
   const router = useRouter();
   const classes = useStyles();
+  const { uiStore } = useStore();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(true);
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -168,18 +171,22 @@ export const LayoutContainer = ({ children, components }) => {
             </ListItem>
           </Link>
         </List>
-        {components?.map((el) => {
-          return (
-            <List disablePadding key={el}>
-              <ListItem button onClick={() => handleChange(el)}>
-                <ListItemIcon>
-                  <InboxIcon />
-                </ListItemIcon>
-                <ListItemText primary={el} />
-              </ListItem>
-            </List>
-          );
-        })}
+        <List disablePadding>
+          <ListItem button onClick={() => handleChange("about")}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={"about"} />
+          </ListItem>
+        </List>
+        <List disablePadding>
+          <ListItem button onClick={() => handleChange("ticker")}>
+            <ListItemIcon>
+              <InboxIcon />
+            </ListItemIcon>
+            <ListItemText primary={"ticker"} />
+          </ListItem>
+        </List>
         <Divider />
       </Drawer>
       <main className={classes.content}>
@@ -188,4 +195,4 @@ export const LayoutContainer = ({ children, components }) => {
       </main>
     </div>
   );
-};
+});
