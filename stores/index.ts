@@ -2,6 +2,7 @@ import { enableStaticRendering } from "mobx-react";
 import { createContext, ReactElement } from "react";
 import ErrorStore from "./error-store";
 import { UiStore } from "./ui-store";
+import { DataStore } from "./data-store";
 
 const isServer = typeof window === "undefined";
 enableStaticRendering(isServer);
@@ -17,6 +18,7 @@ export type ContextProps = {
 
 export class RootStore {
   uiStore: UiStore;
+  dataStore: DataStore;
   errorStore: ErrorStore;
 
   constructor() {
@@ -25,6 +27,7 @@ export class RootStore {
 
   resetStores = (): void => {
     this.uiStore = new UiStore(this);
+    this.dataStore = new DataStore();
     this.errorStore = new ErrorStore();
   };
 }

@@ -22,10 +22,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MenuIcon from "@material-ui/icons/Menu";
-
-import { useRouter } from "next/router";
 import Link from "next/link";
-import useStore from "../../hooks/useStore";
 import { observer } from "mobx-react-lite";
 
 const drawerWidth = 240;
@@ -94,9 +91,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export const LayoutContainer = observer(({ children }) => {
-  const router = useRouter();
   const classes = useStyles();
-  const { uiStore } = useStore();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
 
@@ -106,10 +101,6 @@ export const LayoutContainer = observer(({ children }) => {
 
   const handleDrawerClose = () => {
     setOpen(false);
-  };
-
-  const handleChange = async (route: string) => {
-    await router.push(route, route);
   };
 
   return (
@@ -171,23 +162,6 @@ export const LayoutContainer = observer(({ children }) => {
             </ListItem>
           </Link>
         </List>
-        <List disablePadding>
-          <ListItem button onClick={() => handleChange("about")}>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary={"about"} />
-          </ListItem>
-        </List>
-        <List disablePadding>
-          <ListItem button onClick={() => handleChange("ticker")}>
-            <ListItemIcon>
-              <InboxIcon />
-            </ListItemIcon>
-            <ListItemText primary={"ticker"} />
-          </ListItem>
-        </List>
-        <Divider />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
