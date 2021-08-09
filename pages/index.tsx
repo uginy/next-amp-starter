@@ -6,11 +6,26 @@ import { useTranslation } from "next-i18next";
 import UniForms from "../components/Forms";
 import useStore from "../hooks/useStore";
 import { IFormFieldOptions, IFormLayout } from "../components/Forms/interface";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Button } from "@material-ui/core";
+import SaveIcon from "@material-ui/icons/Save";
+
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    submit: {
+      padding: theme.spacing(1),
+    },
+    button: {
+      margin: theme.spacing(0),
+    },
+  })
+);
 
 const Home = () => {
   const { t } = useTranslation();
   const { dataStore } = useStore();
-  const [modelForm, setModelForm] = useState({});
+  const classes = useStyles();
+  const [modelForm, setModelForm] = useState(null);
 
   const fetchProfile = async () => await dataStore.fetchData();
 
@@ -21,7 +36,7 @@ const Home = () => {
   const layout: IFormLayout[] = [
     {
       className: "row",
-      items: [{ id: "first_name" }, { id: "last_name" }],
+      items: [{ id: "first_name" }, { id: "last_name" }, { id: "employed" }],
     },
     {
       title: "Job",
@@ -41,6 +56,10 @@ const Home = () => {
         },
         {
           id: "contacts.city",
+          className: "col",
+        },
+        {
+          id: "contacts.country",
           className: "col",
         },
       ],
@@ -88,12 +107,22 @@ const Home = () => {
       ],
     },
     {
+      id: "job.salary",
+      label: "Salary",
+      type: "text",
+    },
+    {
       id: "contacts.address",
       label: "Address",
       type: "text",
     },
     {
       id: "contacts.city",
+      label: "City",
+      type: "text",
+    },
+    {
+      id: "contacts.country",
       label: "City",
       type: "text",
     },
@@ -115,9 +144,6 @@ const Home = () => {
 
   return (
     <>
-      <pre style={{ fontSize: "10px" }}>
-        {JSON.stringify(modelForm, null, 5)}
-      </pre>
       <h1 className={styles.title}>{t("welcome")}!</h1>
       <UniForms
         fields={formFields}
@@ -125,9 +151,17 @@ const Home = () => {
         layout={layout}
         onModelChange={formModelChangeHandler}
       />
-      <button type="button" onClick={() => console.log(modelForm)}>
-        Submit
-      </button>
+      <div className={classes.submit}>
+        <Button
+          variant="contained"
+          color="primary"
+          className={classes.button}
+          endIcon={<SaveIcon />}
+          onClick={() => console.log(modelForm)}
+        >
+          Send
+        </Button>
+      </div>
     </>
   );
 };

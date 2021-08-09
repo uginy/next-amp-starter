@@ -21,6 +21,7 @@ export class DataStore {
         contacts: {
           address: "address string",
           city: "Haifa",
+          country: "Israel",
           phone: {
             home: "123123123",
             job: "123133333",
@@ -29,7 +30,7 @@ export class DataStore {
       };
       setTimeout(() => {
         res(result);
-      }, 2000);
+      }, 20);
     });
   }
 }
