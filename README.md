@@ -1,12 +1,13 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Next.js/React form builder implementation with structured object form declarations
 
 ## Stack
 
-* next.js 10.1.3
-* mobx 6.2.0
-* mobx-react 7.1.2
-* react-i18next 11.8.13
-* material-ui/core 4.11.3
+* next.js 11.0.1
+* mobx 6.3.2
+* mobx-react 7.2.0
+* react-i18next 11.11.4
+* material-ui/core 4.12.3
 * typescript 4.2.4
 
 ## Getting Started

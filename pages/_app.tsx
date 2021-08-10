@@ -14,6 +14,14 @@ configure({
   useProxies: "never",
 });
 
+export const config = {
+  api: {
+    sizeLimit: "50mb",
+    bodyParser: true,
+    externalResolver: true,
+  },
+};
+
 export const StoreProvider = ({
   store,
   children,
@@ -25,6 +33,7 @@ export const StoreProvider = ({
 
 const App = ({ Component, pageProps }) => {
   const store = initStore();
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
