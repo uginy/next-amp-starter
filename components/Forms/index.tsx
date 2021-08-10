@@ -1,4 +1,5 @@
 import * as _ from "lodash";
+import React from "react";
 import { IFormsProps } from "./interface";
 import { useStyles } from "./styles";
 import { mapFormFields } from "./components";
@@ -18,9 +19,9 @@ const UniForms = ({ fields, model, layout, onModelChange }: IFormsProps) => {
         <pre>{JSON.stringify(model, null, 4)}</pre>
         {layout.map((it, index) => {
           return (
-            <>
+            <React.Fragment key={index}>
               {it?.title && <h4 className={classes.title}>{it.title}</h4>}
-              <div className={classes.row} key={index}>
+              <div className={classes.row}>
                 {it.items.map((element, i) => {
                   const el = findElement(element);
                   return (
@@ -35,7 +36,6 @@ const UniForms = ({ fields, model, layout, onModelChange }: IFormsProps) => {
                           type: el?.type,
                           defaultValue: el?.defaultValue || "",
                           value: _.get(model, el?.id) ?? el?.defaultValue,
-                          validator: el?.validator,
                           validation: el?.validation,
                           options: el?.options,
                           onChange: (val) => onChangeHandler(el, val),
@@ -45,7 +45,7 @@ const UniForms = ({ fields, model, layout, onModelChange }: IFormsProps) => {
                   );
                 })}
               </div>
-            </>
+            </React.Fragment>
           );
         })}
       </form>

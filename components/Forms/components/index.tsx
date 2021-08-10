@@ -1,5 +1,4 @@
-import { IFormFieldOptions } from "../interface";
-import { validationMethods } from "../validation";
+import { IFormFieldOptions, IValidation } from "../interface";
 import TextField from "./TextField";
 import CheckboxField from "./CheckBoxField";
 import SelectField from "./SelectField";
@@ -12,9 +11,14 @@ export const mapFormFields = (formField: IFormFieldOptions) => {
     onChange: formField.onChange,
     defaultValue: formField.value || formField.defaultValue,
     error: {
-      isError: validationMethods.validator.required(formField.value) || false,
+      isError:
+        formField?.validation?.findIndex((el: IValidation) =>
+          el.expression(formField)
+        ) > -1,
       errorMessage:
-        validationMethods.validation.required(formField.label) || "",
+        formField?.validation
+          ?.find((el: IValidation) => el.expression(formField))
+          ?.message(formField) || "",
     },
     options: formField?.options || [],
   };

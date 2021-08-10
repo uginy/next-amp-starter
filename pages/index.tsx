@@ -9,6 +9,7 @@ import { IFormFieldOptions, IFormLayout } from "../components/Forms/interface";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import SaveIcon from "@material-ui/icons/Save";
+import { checkProperty } from "../components/Forms/validation";
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -85,6 +86,16 @@ const Home = () => {
       id: "first_name",
       label: "First Name",
       type: "text",
+      properties: {
+        required: true,
+        minLength: 4,
+        maxLength: 5,
+      },
+      validation: [
+        checkProperty("required"),
+        checkProperty("minLength"),
+        checkProperty("maxLength"),
+      ],
     },
     {
       id: "last_name",
