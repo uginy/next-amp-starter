@@ -1,8 +1,8 @@
 import Binance from "node-binance-api";
 
 const binance = new Binance().options({
-  APIKEY: "UCU6XmwuHd7HNABU8PJ8Aiw8DbS1bzGHDSsdEYvieEgxITKybpuwdBvej3afasmz",
-  APISECRET: "Xd0yJtNL2ZrLOg852wMvl7EuE5E7duTo0CxZPunvfduUz5im1ElgTkse68iOCanW",
+  APIKEY: process.env.API_KEY,
+  APISECRET: process.env.API_SECRET,
 });
 
 const ws = {
