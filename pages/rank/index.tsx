@@ -18,6 +18,7 @@ interface QuickSearchToolbarProps {
   onChange: () => void;
   value: string;
 }
+const client = Binance();
 
 function QuickSearchToolbar(props: QuickSearchToolbarProps) {
 
@@ -51,7 +52,7 @@ function QuickSearchToolbar(props: QuickSearchToolbarProps) {
   );
 }
 
-const History = ({values}) => {
+const History = ({values, title }) => {
 
   const data = values.value ? values?.value?.map((el, i) => {
     return [i, +el.value]
@@ -72,14 +73,13 @@ const History = ({values}) => {
           title: 'Tick',
         },
         vAxis: {
-          title: 'Price / BUSD',
+          title: title || 'Price / BUSD',
         },
       }}
       rootProps={{'data-testid': '1'}}
     />
   )
 }
-const client = Binance();
 
 
 function escapeRegExp(value: string): string {
@@ -101,7 +101,7 @@ function nFormatter(num) {
 
 const rows: GridRowsProp = []
 const columns: GridColDef[] = [
-  {field: 'position', headerName: '#',  width: 75, disableColumnMenu: true},
+  {field: 'position', headerName: '#', width: 75, disableColumnMenu: true},
   {field: 'symbol', headerName: 'Ticker Name', flex: 1, resizable: true},
   {field: 'priceChangePercent', headerName: 'Price change, %', flex: 1, resizable: true},
   {
@@ -112,12 +112,14 @@ const columns: GridColDef[] = [
     valueFormatter: (p) => (+p.value).toString().replace(/\.0$/, '')
   },
   {field: 'volumeQuote', headerName: 'Volume', resizable: true, flex: 1, valueFormatter: (p) => nFormatter(+p.value)},
-  {field: 'history', headerName: 'History', resizable: true, flex: 4, renderCell: (p) => <History values={p}/>}
+  {field: 'history', headerName: 'History', resizable: true, flex: 4, renderCell: (p) => <History title={'Price change'} values={p}/>},
+  {field: 'positionChange', headerName: 'Position Change', resizable: true, flex: 4, renderCell: (p) => <History title={'Position change'} values={p}/>}
 ];
 
 const Rank = () => {
   const [data, setData] = useState<GridRowsProp>(rows);
   const symbol = useRef<{ [key: string]: any }>({})
+  const position = useRef<{ [key: string]: any }>({})
   const [searchText, setSearchText] = useState('');
 
   const requestSearch = (searchValue: string) => {
@@ -141,18 +143,24 @@ const Rank = () => {
           +a.priceChangePercent > +b.priceChangePercent ? -1 : 1
         )
         .map((el, i) => {
+          el['position'] = i + 1
           if (!symbol.current[el.symbol]) {
             symbol.current[el.symbol] = []
           }
-          symbol.current[el.symbol] = [...symbol.current[el.symbol], {date: new Date(), value: +el.bestBid}]
+          symbol.current[el.symbol] = [...symbol.current[el.symbol], {date: new Date(), value: +el.bestBid}].slice(-60)
 
+          if (!position.current[el.symbol]) {
+            position.current[el.symbol] = []
+          }
+          position.current[el.symbol] =
+            [...position.current[el.symbol], {date: new Date(), value: +el['position']}].slice(-60)
           return {
             ...el,
-            position: i + 1,
             priceChangePercent: +el.priceChangePercent,
             id: el.symbol,
             symbol: el.symbol,
-            history: (symbol.current[el.symbol] as Array<any>)?.slice(-60)
+            history: (symbol.current[el.symbol] as Array<any>),
+            positionChange: (position.current[el.symbol] as Array<any>)
           }
         })
         .slice(0, 20)
