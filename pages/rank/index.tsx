@@ -24,8 +24,8 @@ function QuickSearchToolbar(props: QuickSearchToolbarProps) {
   return (
     <div>
       <div>
-        <GridToolbarFilterButton />
-        <GridToolbarDensitySelector />
+        <GridToolbarFilterButton/>
+        <GridToolbarDensitySelector/>
       </div>
       <TextField
         variant="standard"
@@ -33,16 +33,16 @@ function QuickSearchToolbar(props: QuickSearchToolbarProps) {
         onChange={props.onChange}
         placeholder="Search…"
         InputProps={{
-          startAdornment: <SearchIcon fontSize="small" />,
+          startAdornment: <SearchIcon fontSize="small"/>,
           endAdornment: (
             <IconButton
               title="Clear"
               aria-label="Clear"
               size="small"
-              style={{ visibility: props.value ? 'visible' : 'hidden' }}
+              style={{visibility: props.value ? 'visible' : 'hidden'}}
               onClick={props.clearSearch}
             >
-              <ClearIcon fontSize="small" />
+              <ClearIcon fontSize="small"/>
             </IconButton>
           ),
         }}
@@ -86,12 +86,33 @@ function escapeRegExp(value: string): string {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
 
+function nFormatter(num) {
+  if (num >= 1000000000) {
+    return (num / 1000000000).toFixed(2).replace(/\.0$/, '') + 'B';
+  }
+  if (num >= 1000000) {
+    return (num / 1000000).toFixed(2).replace(/\.0$/, '') + 'M';
+  }
+  if (num >= 1000) {
+    return (num / 1000).toFixed(2).replace(/\.0$/, '') + 'K';
+  }
+  return num;
+}
+
 const rows: GridRowsProp = []
 const columns: GridColDef[] = [
-  {field: 'symbol', headerName: 'Ticker Name', flex: 1},
-  {field: 'priceChangePercent', headerName: 'Price change, %', flex: 1},
-  {field: 'bestBid', headerName: 'Price', flex: 1},
-  {field: 'history', headerName: 'History', flex: 4, renderCell: (p) => <History values={p}/>},
+  {field: 'position', headerName: '#', flex: 1},
+  {field: 'symbol', headerName: 'Ticker Name', flex: 1, resizable: true},
+  {field: 'priceChangePercent', headerName: 'Price change, %', flex: 1, resizable: true},
+  {
+    field: 'bestBid',
+    headerName: 'Price',
+    resizable: true,
+    flex: 1,
+    valueFormatter: (p) => (+p.value).toString().replace(/\.0$/, '')
+  },
+  {field: 'volumeQuote', headerName: 'Volume', resizable: true, flex: 1, valueFormatter: (p) => nFormatter(+p.value)},
+  {field: 'history', headerName: 'History', resizable: true, flex: 4, renderCell: (p) => <History values={p}/>}
 ];
 
 const Rank = () => {
@@ -116,7 +137,10 @@ const Rank = () => {
     client.ws.allTickers((tickers) => {
       const tickersSorted = tickers
         .filter(el => el.symbol.search('BUSD') > -1)
-        .map(el => {
+        .sort((a, b) =>
+          +a.priceChangePercent > +b.priceChangePercent ? -1 : 1
+        )
+        .map((el, i) => {
           if (!symbol.current[el.symbol]) {
             symbol.current[el.symbol] = []
           }
@@ -124,22 +148,23 @@ const Rank = () => {
 
           return {
             ...el,
+            position: i + 1,
             priceChangePercent: +el.priceChangePercent,
             id: el.symbol,
             symbol: el.symbol,
             history: (symbol.current[el.symbol] as Array<any>)?.slice(-60)
           }
         })
-        .sort((a, b) =>
-          +a.priceChangePercent > +b.priceChangePercent ? -1 : 1
-        )
         .slice(0, 20)
+
 
       !disposed && setData(() => tickersSorted);
 
     });
 
     return () => {
+      setData(() => [])
+
       disposed = true;
     }
   }, []);
@@ -148,7 +173,7 @@ const Rank = () => {
     <div style={{height: 'calc(100vh - 7rem)', width: "100%"}}>
       {/*<pre>{JSON.stringify(data[0], null, 4)}</pre>*/}
       <DataGrid
-        components={{ Toolbar: QuickSearchToolbar }}
+        components={{Toolbar: QuickSearchToolbar}}
         rowHeight={200}
         rows={data}
         columns={columns}
