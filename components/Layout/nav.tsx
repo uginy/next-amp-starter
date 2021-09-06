@@ -8,10 +8,6 @@ export const TopNav = () => {
       <Link as="/" href="/">
         Main
       </Link>
-      &nbsp;|&nbsp;
-      <Link as="/about" href={"/about"}>
-        About
-      </Link>
     </Box>
   );
 };

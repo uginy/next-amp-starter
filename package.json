@@ -10,10 +10,11 @@
   "dependencies": {
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
+    "@mui/x-data-grid": "^4.0.0",
     "@types/axios": "^0.14.0",
     "@types/node": "^14.14.41",
     "axios": "^0.21.1",
-    "binance-api-node": "^0.11.3",
+    "binance-api-node": "^0.11.13",
     "clx": "^1.0.0",
     "mobx": "^6.2.0",
     "mobx-react": "^7.1.0",
@@ -30,6 +31,8 @@
     "swr": "^0.5.6"
   },
   "devDependencies": {
+    "@material-ui/styles": "^4.11.4",
+    "@mui/x-data-grid-generator": "^4.0.0",
     "@types/react": "^17.0.3",
     "eslint-config-prettier": "^8.2.0",
     "eslint-plugin-prettier": "^3.4.0",
