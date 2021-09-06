@@ -101,7 +101,7 @@ function nFormatter(num) {
 
 const rows: GridRowsProp = []
 const columns: GridColDef[] = [
-  {field: 'position', headerName: '#', flex: 1},
+  {field: 'position', headerName: '#',  width: 75, disableColumnMenu: true},
   {field: 'symbol', headerName: 'Ticker Name', flex: 1, resizable: true},
   {field: 'priceChangePercent', headerName: 'Price change, %', flex: 1, resizable: true},
   {
