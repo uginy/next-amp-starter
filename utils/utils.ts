@@ -1,4 +1,4 @@
-export class UtilsClass {
+class UtilsClass {
   public static escapeRegExp(value: string): string {
     return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
   }
@@ -16,3 +16,5 @@ export class UtilsClass {
     return num;
   }
 }
+
+export default UtilsClass

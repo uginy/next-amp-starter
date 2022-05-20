@@ -13,7 +13,7 @@ const options = {
 };
 
 
-export const History = ({values}) => {
+const HistoryChart = ({values}) => {
   let data = [];
   const tickers = values?.map(el => el.symbol)
 
@@ -40,3 +40,5 @@ export const History = ({values}) => {
     />
   )
 }
+
+export default HistoryChart

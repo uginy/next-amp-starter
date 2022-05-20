@@ -1,20 +1,10 @@
 import {useEffect, useRef, useState} from "react";
 import Binance from "binance-api-node";
 import {GridColDef, GridRowsProp} from '@mui/x-data-grid';
-import {History} from './HistoryChart'
+import HistoryChart from '../../components/HistoryChart'
 
 
 const client = Binance();
-
-const columns: GridColDef[] = [
-  {field: 'symbol', headerName: 'Ticker Name', flex: 1},
-  {
-    field: 'positionChange',
-    headerName: 'Position Change',
-    flex: 4,
-    renderCell: (p) => <History values={p}/>
-  }
-];
 
 const Rank = () => {
   const [data, setData] = useState<GridRowsProp>([]);
@@ -70,7 +60,7 @@ const Rank = () => {
 
   return (
     <div style={{height: 'calc(100% - 30px)', width: "100%", border: '1px solid silver'}}>
-      <History values={data}/>
+      <HistoryChart values={data}/>
     </div>
   );
 };
