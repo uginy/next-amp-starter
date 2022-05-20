@@ -1,29 +1,41 @@
 import Chart from 'react-google-charts';
+import dayjs from 'dayjs';
 
-export const History = ({values, title}) => {
+const options = {
+  title: "Price Change Speed",
+  curveType: "function",
+  hAxis: {
+    title: 'Tick',
+  },
+  vAxis: {
+    title: '',
+  },
+};
 
-  const data = values.value ? values?.value?.map((el, i) => {
-    return [i, +el.value]
-  }) : [0, 0]
 
-  return (
+export const History = ({values}) => {
+  let data = [];
+  const tickers = values?.map(el => el.symbol)
+
+  for (let i = 0; i < 60; i++) {
+    for (let k = 0; k < values.length; k++) {
+      const vals = values.map((_, n)=> values[n]?.priceChange[i]?.value)
+      const index = dayjs(values[0]?.priceChange[i]?.date).format("HH:mm:ss");
+      data[i] = [i, ...vals]
+    }
+  }
+
+  return values.length > 0 && (
     <Chart
-      width={'100%'}
-      height={'200px'}
+      width={'1800px'}
+      height={'800px'}
       chartType="LineChart"
+      options={options}
       loader={<div>Loading Chart</div>}
       data={[
-        ['x', 'price'],
+        ['tick', ...tickers],
         ...data
       ]}
-      options={{
-        hAxis: {
-          title: 'Tick',
-        },
-        vAxis: {
-          title: title || 'Price / BUSD',
-        },
-      }}
       rootProps={{'data-testid': '1'}}
     />
   )
