@@ -1,7 +1,8 @@
 import {useEffect, useRef, useState} from "react";
 import Binance from "binance-api-node";
-import {GridColDef, GridRowsProp} from '@mui/x-data-grid';
+import {GridRowsProp} from '@mui/x-data-grid';
 import HistoryChart from '../../components/HistoryChart'
+import dayjs from 'dayjs';
 
 
 const client = Binance();
@@ -12,9 +13,8 @@ const Rank = () => {
   const position = useRef<{ [key: string]: any }>({})
   const ticks = useRef<number>(0)
 
-
   const tickersMap = (tickers) => {
-    if (ticks.current % 10 === 0) {
+    if (ticks.current % 1 === 0) {
       const tickersSorted = tickers
         .filter(el => el.symbol.search('BUSD') > -1)
         .sort((a, b) =>
@@ -36,8 +36,6 @@ const Rank = () => {
             [...position.current[el.symbol], {date: new Date().toISOString(), value: +el['position']}].slice(-60)
 
           return {
-            ...el,
-            priceChangePercent: +el.priceChangePercent,
             id: el.symbol,
             symbol: el.symbol,
             priceChange: (position.current[el.symbol] as Array<any>)

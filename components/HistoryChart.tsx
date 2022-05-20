@@ -21,7 +21,7 @@ const HistoryChart = ({values}) => {
     for (let k = 0; k < values.length; k++) {
       const vals = values.map((_, n)=> values[n]?.priceChange[i]?.value)
       const index = dayjs(values[0]?.priceChange[i]?.date).format("HH:mm:ss");
-      data[i] = [i, ...vals]
+      data[i] = [index, ...vals]
     }
   }
 
