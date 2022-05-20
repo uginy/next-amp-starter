@@ -14,7 +14,7 @@ const Rank = () => {
   const ticks = useRef<number>(0)
 
   const tickersMap = (tickers) => {
-    if (ticks.current % 1 === 0) {
+    if (ticks.current % 60 === 0) {
       const tickersSorted = tickers
         .filter(el => el.symbol.search('BUSD') > -1)
         .sort((a, b) =>
